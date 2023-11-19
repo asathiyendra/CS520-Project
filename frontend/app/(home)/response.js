@@ -1,9 +1,15 @@
-import { Box, Icon, Text, HStack, ScrollView } from "@gluestack-ui/themed";
-
+import {
+  Box,
+  Button,
+  ButtonText,
+  FlatList,
+  HStack,
+  Text,
+  View,
+} from "@gluestack-ui/themed";
 import Screen from "../../components/Screen";
-import { ArrowRight } from "lucide-react-native";
 
-const RESPONSES = [
+const COMMENTS = [
   {
     id: 1,
     user: {
@@ -78,31 +84,46 @@ const RESPONSES = [
   },
 ];
 
-export default function responses() {
+export default function response() {
+  const renderTop = () => {
+    return (
+      <Box>
+        <Text size="lg" textAlign="center" my="$5">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        </Text>
+        <HStack justifyContent="space-around" my="$5">
+          <Button size="sm">
+            <ButtonText>Likes</ButtonText>
+          </Button>
+          <Button size="sm" bg="$green500">
+            <ButtonText>Comments</ButtonText>
+          </Button>
+          <Button size="sm" bg="$yellow500">
+            <ButtonText>Share</ButtonText>
+          </Button>
+          <Button size="sm" bg="$red500">
+            <ButtonText>Report</ButtonText>
+          </Button>
+        </HStack>
+        <Text fontWeight="bold" mb="$3">
+          Comments
+        </Text>
+      </Box>
+    );
+  };
   return (
-    <Screen>
-      <ScrollView>
-        {RESPONSES.map((response, id) => (
-          <HStack
-            alignItems="center"
-            bg={id % 2 == 0 ? "$pink100" : "$pink50"}
-            p="$4"
-            key={response.id}
-          >
-            <Box textAlign="center" flexGrow={1}>
-              <Text fontSize={20} fontWeight="bold">
-                {response.user.name}
-              </Text>
-              <Text>
-                {response.response.length > 40
-                  ? response.response.substring(0, 40) + "..."
-                  : response.response}
-              </Text>
-            </Box>
-            <Icon as={ArrowRight} mr="$2" />
-          </HStack>
-        ))}
-      </ScrollView>
+    <Screen justifyContent="flex-start">
+      <FlatList
+        ListHeaderComponent={renderTop}
+        data={COMMENTS}
+        ListEmptyComponent={<Text>No comments for this post.</Text>}
+        renderItem={({ item, index }) => (
+          <Box p="$4" bg={index % 2 == 0 ? "$pink100" : "$pink50"}>
+            <Text fontWeight="bold">{item.user.name}</Text>
+            <Text>{item.response}</Text>
+          </Box>
+        )}
+      ></FlatList>
     </Screen>
   );
 }

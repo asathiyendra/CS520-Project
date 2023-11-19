@@ -17,9 +17,19 @@ export default function index() {
             <ButtonText>Register Page</ButtonText>
           </Button>
         </Link>
-        <Link href="/responses" asChild>
+        <Link href="/prompt" asChild>
           <Button active={"primary"} variant={"solid"}>
             <ButtonText>Prompt Page</ButtonText>
+          </Button>
+        </Link>
+        <Link href="/responses" asChild>
+          <Button active={"primary"} variant={"solid"}>
+            <ButtonText>Responses Page</ButtonText>
+          </Button>
+        </Link>
+        <Link href="/response" asChild>
+          <Button active={"primary"} variant={"solid"}>
+            <ButtonText>Response Page</ButtonText>
           </Button>
         </Link>
       </VStack>
