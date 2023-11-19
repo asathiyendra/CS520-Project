@@ -4,10 +4,22 @@ import {
   ButtonText,
   FlatList,
   HStack,
+  Modal,
+  ModalBackdrop,
+  ModalContent,
+  ModalHeader,
   Text,
-  View,
+  Heading,
+  ModalCloseButton,
+  Icon,
+  CloseIcon,
+  ModalBody,
+  FormControl,
+  Textarea,
+  TextareaInput,
 } from "@gluestack-ui/themed";
 import Screen from "../../components/Screen";
+import { useRef, useState } from "react";
 
 const COMMENTS = [
   {
@@ -85,6 +97,9 @@ const COMMENTS = [
 ];
 
 export default function response() {
+  const [showCommentModal, setShowCommentModal] = useState(true);
+  const modalRef = useRef(null);
+
   const renderTop = () => {
     return (
       <Box>
@@ -95,7 +110,12 @@ export default function response() {
           <Button size="sm">
             <ButtonText>Likes</ButtonText>
           </Button>
-          <Button size="sm" bg="$green500">
+          <Button
+            onPress={() => setShowCommentModal(true)}
+            ref={modalRef}
+            size="sm"
+            bg={"$green500"}
+          >
             <ButtonText>Comments</ButtonText>
           </Button>
           <Button size="sm" bg="$yellow500">
@@ -108,6 +128,39 @@ export default function response() {
         <Text fontWeight="bold" mb="$3">
           Comments
         </Text>
+        {/* comment modal */}
+        <Modal
+          isOpen={showCommentModal}
+          onClose={() => setShowCommentModal(false)}
+          ref={modalRef}
+        >
+          <ModalBackdrop />
+          <ModalContent>
+            <ModalHeader>
+              <Heading>Comment</Heading>
+              <ModalCloseButton>
+                <Icon as={CloseIcon} />
+              </ModalCloseButton>
+            </ModalHeader>
+            <ModalBody>
+              <FormControl>
+                <Textarea isInvalid={false} isDisabled={false}>
+                  <TextareaInput
+                    placeholder="Your text goes here..."
+                    autoFocus={true}
+                  />
+                </Textarea>
+              </FormControl>
+              <Button
+                action="primary"
+                onPress={() => setShowCommentModal(false)}
+                my="$5"
+              >
+                <ButtonText>Submit</ButtonText>
+              </Button>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       </Box>
     );
   };
