@@ -1,14 +1,6 @@
-import {
-  Box,
-  Icon,
-  Text,
-  HStack,
-  ScrollView,
-  FlatList,
-} from "@gluestack-ui/themed";
+import { FlatList } from "@gluestack-ui/themed";
 
 import Screen from "../../components/Screen";
-import { ArrowRight } from "lucide-react-native";
 import ResponseCard from "../../components/ResponseCard";
 
 const RESPONSES = [
@@ -96,7 +88,6 @@ export default function responses() {
             key={item.id}
             index={index}
             username={item.user.name}
-            avatar={item.user.avatar}
             response={item.response}
           />
         )}

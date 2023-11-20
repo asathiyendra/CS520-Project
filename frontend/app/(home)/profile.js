@@ -43,7 +43,7 @@ export default function profile() {
           </Input>
         </FormControl>
         <Button
-          active={"primary"}
+          action={"primary"}
           variant={"solid"}
           onPress={() => console.log("pressed")}
         >

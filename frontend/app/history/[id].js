@@ -64,6 +64,7 @@ export default function previousPrompt() {
         data={RESPONSES}
         renderItem={({ item, index }) => (
           <ResponseCard
+            key={index}
             index={index}
             username={item.user.name}
             response={item.response}
