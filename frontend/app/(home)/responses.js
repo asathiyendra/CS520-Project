@@ -1,4 +1,11 @@
-import { Box, Icon, Text, HStack, ScrollView } from "@gluestack-ui/themed";
+import {
+  Box,
+  Icon,
+  Text,
+  HStack,
+  ScrollView,
+  FlatList,
+} from "@gluestack-ui/themed";
 
 import Screen from "../../components/Screen";
 import { ArrowRight } from "lucide-react-native";
@@ -82,16 +89,19 @@ const RESPONSES = [
 export default function responses() {
   return (
     <Screen>
-      <ScrollView>
-        {RESPONSES.map((response, id) => (
+      <FlatList
+        data={RESPONSES}
+        renderItem={({ item, index }) => (
           <ResponseCard
-            key={response.id}
-            username={response.user.name}
-            avatar={response.user.avatar}
-            response={response.response}
+            key={item.id}
+            index={index}
+            username={item.user.name}
+            avatar={item.user.avatar}
+            response={item.response}
           />
-        ))}
-      </ScrollView>
+        )}
+        keyExtractor={(item) => item.id}
+      />
     </Screen>
   );
 }

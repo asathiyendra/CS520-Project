@@ -6,20 +6,6 @@ export default function Layout() {
   return (
     <Tabs>
       <Tabs.Screen
-        name="prompt"
-        options={{
-          // This tab will no longer show up in the tab bar.
-          href: null,
-        }}
-      />
-      <Tabs.Screen
-        name="response"
-        options={{
-          // This tab will no longer show up in the tab bar.
-          href: null,
-        }}
-      />
-      <Tabs.Screen
         name="previousPrompt"
         options={{
           // This tab will no longer show up in the tab bar.

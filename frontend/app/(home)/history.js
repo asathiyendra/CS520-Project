@@ -1,4 +1,12 @@
-import { Box, FlatList, HStack, Icon, Text } from "@gluestack-ui/themed";
+import {
+  Box,
+  FlatList,
+  HStack,
+  Icon,
+  Pressable,
+  Text,
+} from "@gluestack-ui/themed";
+import { router } from "expo-router";
 
 import Screen from "../../components/Screen";
 import { ArrowRightIcon } from "lucide-react-native";
@@ -31,7 +39,11 @@ export default function history() {
         data={PREVIOUS_PROMPTS}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item, index }) => (
-          <Box p="$4" bg={index % 2 == 0 ? "$pink100" : "$pink50"}>
+          <Pressable
+            onPress={() => router.push(`/history/${item.id}`)}
+            p="$4"
+            bg={index % 2 == 0 ? "$pink100" : "$pink50"}
+          >
             <HStack alignItems="center" justifyContent="space-between">
               <Box>
                 <Text fontWeight="bold">{item.date}</Text>
@@ -39,7 +51,7 @@ export default function history() {
               </Box>
               <Icon as={ArrowRightIcon} size="lg" />
             </HStack>
-          </Box>
+          </Pressable>
         )}
       />
     </Screen>

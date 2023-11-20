@@ -27,11 +27,6 @@ export default function index() {
             <ButtonText>Responses Page</ButtonText>
           </Button>
         </Link>
-        <Link href="/response" asChild>
-          <Button active={"primary"} variant={"solid"}>
-            <ButtonText>Response Page</ButtonText>
-          </Button>
-        </Link>
         <Link href="/friends" asChild>
           <Button active={"primary"} variant={"solid"}>
             <ButtonText>Friends Page</ButtonText>
@@ -40,11 +35,6 @@ export default function index() {
         <Link href="/history" asChild>
           <Button active={"primary"} variant={"solid"}>
             <ButtonText>History Page</ButtonText>
-          </Button>
-        </Link>
-        <Link href="/previousPrompt" asChild>
-          <Button active={"primary"} variant={"solid"}>
-            <ButtonText>Previous Prompt Page</ButtonText>
           </Button>
         </Link>
         <Link href="/profile" asChild>

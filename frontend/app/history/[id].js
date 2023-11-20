@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useNavigation, useLocalSearchParams } from "expo-router";
 import { Box, FlatList, Text } from "@gluestack-ui/themed";
 
 import Screen from "../../components/Screen";
@@ -34,6 +36,15 @@ const RESPONSES = [
 ];
 
 export default function previousPrompt() {
+  const { id } = useLocalSearchParams();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: `Prompt ${id}`,
+    });
+  }, []);
+
   const renderTop = () => {
     return (
       <Box>

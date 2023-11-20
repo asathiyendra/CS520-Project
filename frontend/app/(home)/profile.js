@@ -7,7 +7,6 @@ import {
   Icon,
   Input,
   InputField,
-  Text,
   VStack,
 } from "@gluestack-ui/themed";
 
