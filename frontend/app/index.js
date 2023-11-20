@@ -42,6 +42,16 @@ export default function index() {
             <ButtonText>History Page</ButtonText>
           </Button>
         </Link>
+        <Link href="/previousPrompt" asChild>
+          <Button active={"primary"} variant={"solid"}>
+            <ButtonText>Previous Prompt Page</ButtonText>
+          </Button>
+        </Link>
+        <Link href="/profile" asChild>
+          <Button active={"primary"} variant={"solid"}>
+            <ButtonText>Profile Page</ButtonText>
+          </Button>
+        </Link>
       </VStack>
     </Screen>
   );
