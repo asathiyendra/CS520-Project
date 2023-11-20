@@ -1,13 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigation, useLocalSearchParams } from "expo-router";
 import {
+  CloseIcon,
+  Heading,
   Box,
   Button,
   ButtonText,
   FlatList,
   HStack,
   Icon,
+  Modal,
+  ModalBackdrop,
+  ModalContent,
+  ModalHeader,
   Text,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from "@gluestack-ui/themed";
 import { User } from "lucide-react-native";
 
@@ -48,6 +57,9 @@ export default function friend() {
   const { id } = useLocalSearchParams();
   const navigation = useNavigation();
 
+  const [showUnfriendModal, setShowUnfriendModal] = useState(false);
+  const modalRef = useRef();
+
   useEffect(() => {
     navigation.setOptions({
       title: `User ${id}`,
@@ -59,14 +71,57 @@ export default function friend() {
       <Box>
         <HStack justifyContent="space-between" mb="$5">
           <Text></Text>
-          <Button action={"negative"} variant="solid" my="$5">
+          <Button
+            onPress={() => setShowUnfriendModal(true)}
+            ref={modalRef}
+            action={"negative"}
+            variant="solid"
+            my="$5"
+          >
             <ButtonText>Unfriend</ButtonText>
           </Button>
         </HStack>
         <Icon as={User} alignSelf="center" size={80} mb="$5" />
-        <Text fontWeight="bold" mb="$3">
-          Responses
-        </Text>
+        {/* unfriend modal */}
+        <Modal
+          isOpen={showUnfriendModal}
+          onClose={() => setShowUnfriendModal(false)}
+          ref={modalRef}
+        >
+          <ModalBackdrop />
+          <ModalContent>
+            <ModalHeader>
+              <Heading>Unfriend?</Heading>
+              <ModalCloseButton>
+                <Icon as={CloseIcon} />
+              </ModalCloseButton>
+            </ModalHeader>
+            <ModalBody>
+              <Text>
+                Are you certain you wish to remove this friend from your list?
+              </Text>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                onPress={() => setShowUnfriendModal(false)}
+                action={"negative"}
+                variant="solid"
+                mr="$3"
+                size="sm"
+              >
+                <ButtonText>Yes</ButtonText>
+              </Button>
+              <Button
+                onPress={() => setShowUnfriendModal(false)}
+                action={"secondary"}
+                variant="solid"
+                size="sm"
+              >
+                <ButtonText>Cancel</ButtonText>
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Box>
     );
   };
