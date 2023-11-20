@@ -97,7 +97,7 @@ const COMMENTS = [
 ];
 
 export default function response() {
-  const [showCommentModal, setShowCommentModal] = useState(true);
+  const [showCommentModal, setShowCommentModal] = useState(false);
   const modalRef = useRef(null);
 
   const renderTop = () => {

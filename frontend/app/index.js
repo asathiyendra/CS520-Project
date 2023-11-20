@@ -32,6 +32,11 @@ export default function index() {
             <ButtonText>Response Page</ButtonText>
           </Button>
         </Link>
+        <Link href="/friends" asChild>
+          <Button active={"primary"} variant={"solid"}>
+            <ButtonText>Friends Page</ButtonText>
+          </Button>
+        </Link>
       </VStack>
     </Screen>
   );
