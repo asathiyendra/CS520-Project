@@ -37,6 +37,11 @@ export default function index() {
             <ButtonText>Friends Page</ButtonText>
           </Button>
         </Link>
+        <Link href="/history" asChild>
+          <Button active={"primary"} variant={"solid"}>
+            <ButtonText>History Page</ButtonText>
+          </Button>
+        </Link>
       </VStack>
     </Screen>
   );

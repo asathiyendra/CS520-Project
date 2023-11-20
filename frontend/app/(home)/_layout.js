@@ -22,6 +22,7 @@ export default function Layout() {
       <Tabs.Screen
         name="responses"
         options={{
+          headerTitle: "Responses",
           tabBarLabel: "Responses",
           tabBarIcon: ({ color, size }) => {
             return <Icon as={MessageCircle} color={color} size={size} />;
@@ -31,6 +32,7 @@ export default function Layout() {
       <Tabs.Screen
         name="friends"
         options={{
+          headerTitle: "Friends",
           tabBarLabel: "Friends",
           tabBarIcon: ({ color, size }) => {
             return <Icon as={Users} color={color} size={size} />;
@@ -40,6 +42,7 @@ export default function Layout() {
       <Tabs.Screen
         name="history"
         options={{
+          headerTitle: "History",
           tabBarLabel: "history",
           tabBarIcon: ({ color, size }) => {
             return <Icon as={History} color={color} size={size} />;
@@ -49,6 +52,7 @@ export default function Layout() {
       <Tabs.Screen
         name="profile"
         options={{
+          headerTitle: "Profile",
           tabBarLabel: "profile",
           tabBarIcon: ({ color, size }) => {
             return <Icon as={Settings} color={color} size={size} />;

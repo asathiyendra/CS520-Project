@@ -141,6 +141,7 @@ export default function friends() {
         renderItem={({ item, index }) => (
           <HStack
             justifyContent="space-between"
+            alignItems="center"
             p="$4"
             bg={index % 2 == 0 ? "$pink100" : "$pink50"}
             key={index}
