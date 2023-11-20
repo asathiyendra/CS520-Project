@@ -16,6 +16,11 @@ import {
   FormControl,
   Input,
   InputField,
+  Checkbox,
+  CheckboxIndicator,
+  CheckboxIcon,
+  CheckIcon,
+  ButtonIcon,
 } from "@gluestack-ui/themed";
 import Screen from "../../components/Screen";
 import { ArrowRightIcon, User } from "lucide-react-native";
@@ -24,22 +29,22 @@ import { useRef, useState } from "react";
 const FRIENDS = [
   {
     name: "John Doe",
-    username: "johndoe",
+    username: "johndoe1",
     avatar: "https://i.pravatar.cc/300?img=1",
   },
   {
     name: "Jane Doe",
-    username: "janedoe",
+    username: "janedoe1",
     avatar: "https://i.pravatar.cc/300?img=2",
   },
   {
     name: "John Smith",
-    username: "johnsmith",
+    username: "johnsmith1",
     avatar: "https://i.pravatar.cc/300?img=3",
   },
   {
     name: "Jane Smith",
-    username: "janesmith",
+    username: "janesmith1",
     avatar: "https://i.pravatar.cc/300?img=4",
   },
   {
@@ -65,8 +70,15 @@ const FRIENDS = [
 ];
 
 export default function friends() {
+  const [friends, setFriends] = useState(FRIENDS);
+  const [removeFlag, setRemoveFlag] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const modalRef = useRef(null);
+
+  const removeFriend = (username) => {
+    const newFriends = friends.filter((friend) => friend.username != username);
+    setFriends(newFriends);
+  };
 
   const renderTop = () => {
     return (
@@ -80,8 +92,13 @@ export default function friends() {
         >
           <ButtonText>Add</ButtonText>
         </Button>
-        <Button action={"negative"} variant={"solid"} isDisabled={false}>
-          <ButtonText>Remove</ButtonText>
+        <Button
+          onPress={() => setRemoveFlag(!removeFlag)}
+          action={"negative"}
+          variant={removeFlag ? "outline" : "solid"}
+          isDisabled={false}
+        >
+          <ButtonText>{removeFlag ? "Done" : "Remove"}</ButtonText>
         </Button>
         <Modal
           isOpen={showAddModal}
@@ -114,19 +131,32 @@ export default function friends() {
       </HStack>
     );
   };
+
   return (
     <Screen justifyContent="flex-start">
       <FlatList
         ListHeaderComponent={renderTop}
-        data={FRIENDS}
+        data={friends}
         ListEmptyComponent={<Text>No friends found.</Text>}
         renderItem={({ item, index }) => (
           <HStack
             justifyContent="space-between"
             p="$4"
             bg={index % 2 == 0 ? "$pink100" : "$pink50"}
+            key={index}
           >
-            <Icon as={User} size="lg" />
+            {removeFlag ? (
+              <Button
+                onPress={() => removeFriend(item.username)}
+                action="negative"
+                size="xs"
+              >
+                <ButtonIcon as={CloseIcon} size="lg" />
+              </Button>
+            ) : (
+              <Icon as={User} size="lg" />
+            )}
+
             <Text fontWeight="bold">{item.name}</Text>
             <Icon as={ArrowRightIcon} size="lg" />
           </HStack>
