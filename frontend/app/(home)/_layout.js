@@ -20,6 +20,13 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
+        name="previousPrompt"
+        options={{
+          // This tab will no longer show up in the tab bar.
+          href: null,
+        }}
+      />
+      <Tabs.Screen
         name="responses"
         options={{
           headerTitle: "Responses",
