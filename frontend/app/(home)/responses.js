@@ -2,6 +2,7 @@ import { Box, Icon, Text, HStack, ScrollView } from "@gluestack-ui/themed";
 
 import Screen from "../../components/Screen";
 import { ArrowRight } from "lucide-react-native";
+import ResponseCard from "../../components/ResponseCard";
 
 const RESPONSES = [
   {
@@ -83,24 +84,12 @@ export default function responses() {
     <Screen>
       <ScrollView>
         {RESPONSES.map((response, id) => (
-          <HStack
-            alignItems="center"
-            bg={id % 2 == 0 ? "$pink100" : "$pink50"}
-            p="$4"
+          <ResponseCard
             key={response.id}
-          >
-            <Box textAlign="center" flexGrow={1}>
-              <Text fontSize={20} fontWeight="bold">
-                {response.user.name}
-              </Text>
-              <Text>
-                {response.response.length > 40
-                  ? response.response.substring(0, 40) + "..."
-                  : response.response}
-              </Text>
-            </Box>
-            <Icon as={ArrowRight} mr="$2" />
-          </HStack>
+            username={response.user.name}
+            avatar={response.user.avatar}
+            response={response.response}
+          />
         ))}
       </ScrollView>
     </Screen>
