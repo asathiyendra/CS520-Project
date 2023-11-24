@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import Prompts
+from .models import Prompt
 
-admin.site.register(Prompts)
+admin.site.register(Prompt)

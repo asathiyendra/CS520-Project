@@ -1,8 +1,12 @@
 from django.db import models
 
-class Prompts(models.Model):
-    text = models.TextField()
+from django.db import models
+
+class Prompt(models.Model):
+    promptid = models.AutoField(primary_key=True)
     date = models.DateField()
-    
-    def __str__(self):
-        return self.text
+    text = models.TextField()
+
+    class Meta:
+        managed = False
+        db_table = 'prompts'
