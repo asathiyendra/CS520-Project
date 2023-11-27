@@ -76,7 +76,6 @@ export default function friend() {
             ref={modalRef}
             action={"negative"}
             variant="solid"
-            my="$5"
           >
             <ButtonText>Unfriend</ButtonText>
           </Button>

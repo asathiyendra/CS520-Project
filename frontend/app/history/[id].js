@@ -48,7 +48,7 @@ export default function previousPrompt() {
   const renderTop = () => {
     return (
       <Box>
-        <Text size="lg" textAlign="center" my="$5">
+        <Text size="lg" textAlign="center" mb="$5">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </Text>
         <Text fontWeight="bold" mb="$3">
@@ -57,6 +57,7 @@ export default function previousPrompt() {
       </Box>
     );
   };
+
   return (
     <Screen>
       <FlatList

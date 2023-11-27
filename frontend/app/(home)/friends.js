@@ -88,7 +88,7 @@ export default function friends() {
 
   const renderTop = () => {
     return (
-      <HStack justifyContent="space-between" my="$5">
+      <HStack justifyContent="space-between" mb="$5">
         <Button
           onPress={() => setShowAddModal(true)}
           ref={modalRef}
