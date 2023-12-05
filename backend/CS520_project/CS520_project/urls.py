@@ -18,11 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from prompts.views import PromptViewSet
+from responses.views import store_response
+
+
 
 router = DefaultRouter()
 router.register(r'prompts', PromptViewSet, basename='prompt')
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('store_response/', store_response),
     path('', include(router.urls)),
 ]
