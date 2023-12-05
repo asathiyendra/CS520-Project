@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from prompts.views import PromptViewSet
-from responses.views import store_response
+from responses.views import store_response, get_friends_responses, get_response_details
+from Friendships.views import get_friends, add_friend, delete_friend, get_friend_details
 
 
 
@@ -28,5 +29,14 @@ router.register(r'prompts', PromptViewSet, basename='prompt')
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('store_response/', store_response),
+    path('friendsResponses/', get_friends_responses, name='get_friends_responses'),
+    path('getResponseDetails/', get_response_details, name='get_response_details'),
+
+    #################### FRIENDSHIPS ####################
+    path('friendships/', get_friends, name='get_friends'),
+    path('friendships/add/', add_friend, name='add_friend'),
+    path('friendships/delete/', delete_friend, name='delete_friend'),
+    path('friendships/details/', get_friend_details, name='get_friend_details'),
+
     path('', include(router.urls)),
 ]
