@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-cc0^42^g(ef2=g361-ikfevoolo$kq4msx79shkom@*g$u8ua#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -37,9 +37,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'users.apps.UsersConfig',
-    'prompts.apps.PromptsConfig',
-    'responses.apps.ResponsesConfig',
+    "users.apps.UsersConfig",
+    "prompts.apps.PromptsConfig",
+    "responses.apps.ResponsesConfig",
 ]
 
 MIDDLEWARE = [
@@ -51,6 +51,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
 
 ROOT_URLCONF = "CS520_project.urls"
 
@@ -78,13 +79,13 @@ WSGI_APPLICATION = "CS520_project.wsgi.application"
 
 # Set the DATABASES configuration
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cs520project',
-        'USER': 'postgres',
-        'PASSWORD': 'cs520project',
-        'HOST': 'cs520project.c0oywlnhl76y.us-east-2.rds.amazonaws.com',
-        'PORT': '5432',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "cs520project",
+        "USER": "postgres",
+        "PASSWORD": "cs520project",
+        "HOST": "cs520project.c0oywlnhl76y.us-east-2.rds.amazonaws.com",
+        "PORT": "5432",
     }
 }
 
@@ -95,9 +96,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
 ]
 
 
