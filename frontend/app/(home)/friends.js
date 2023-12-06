@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { router } from "expo-router";
 import {
   Button,
@@ -20,8 +20,11 @@ import {
   InputField,
   ButtonIcon,
   Pressable,
+  Box,
 } from "@gluestack-ui/themed";
 import { ArrowRightIcon, User } from "lucide-react-native";
+
+import { getFriends } from "../../components/apiCalls";
 import Screen from "../../components/Screen";
 
 const FRIENDS = [
@@ -76,7 +79,7 @@ const FRIENDS = [
 ];
 
 export default function friends() {
-  const [friends, setFriends] = useState(FRIENDS);
+  const [friends, setFriends] = useState(null);
   const [removeFlag, setRemoveFlag] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const modalRef = useRef(null);
@@ -85,6 +88,12 @@ export default function friends() {
     const newFriends = friends.filter((friend) => friend.username != username);
     setFriends(newFriends);
   };
+
+  useEffect(() => {
+    getFriends().then((friends) => {
+      setFriends(friends);
+    });
+  });
 
   const renderTop = () => {
     return (
@@ -143,7 +152,7 @@ export default function friends() {
       <FlatList
         ListHeaderComponent={renderTop}
         data={friends}
-        ListEmptyComponent={<Text>No friends found.</Text>}
+        ListEmptyComponent={<Text textAlign="center">No friends found.</Text>}
         renderItem={({ item, index }) => (
           <Pressable onPress={() => router.push(`friend/${item.id}`)}>
             <HStack
@@ -165,7 +174,10 @@ export default function friends() {
                 <Icon as={User} size="lg" />
               )}
 
-              <Text fontWeight="bold">{item.name}</Text>
+              <Box alignItems="center">
+                <Text fontWeight="bold">{item.username}</Text>
+                <Text>{item.email}</Text>
+              </Box>
               <Icon as={ArrowRightIcon} size="lg" />
             </HStack>
           </Pressable>
