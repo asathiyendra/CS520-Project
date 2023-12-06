@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "prompts.apps.PromptsConfig",
     "responses.apps.ResponsesConfig",
+    "Friendships.apps.FriendshipsConfig",
 ]
 
 MIDDLEWARE = [
