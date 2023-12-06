@@ -1,12 +1,12 @@
 from django.db import models
 from datetime import date
 from prompts.models import Prompt
-# from users.models import Users
+from users.models import Users
 
 
 # Create your models here.
 
-
+'''
 class Users(models.Model):
     userid = models.AutoField(primary_key=True, unique=True, default=0)
     username = models.TextField()
@@ -18,6 +18,7 @@ class Users(models.Model):
     
     class Meta:
         db_table = 'users'
+'''
 
 class Friendships(models.Model):
     friendshipid = models.AutoField(primary_key=True)
