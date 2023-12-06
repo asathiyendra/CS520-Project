@@ -20,7 +20,7 @@ from rest_framework.routers import DefaultRouter
 from prompts.views import PromptViewSet
 from responses.views import store_response, get_friends_responses, get_response_details
 from Friendships.views import get_friends, add_friend, delete_friend, get_friend_details
-from users.views import get_user_data, update_user_data
+from users.views import user_login, register_user, get_user_data, update_user_data
 
 
 
@@ -39,9 +39,13 @@ urlpatterns = [
     path('friendships/delete/', delete_friend, name='delete_friend'),
     path('friendships/details/', get_friend_details, name='get_friend_details'),
 
+    ################## User Login ####################
+    path('login/', user_login, name="user_login"),
+    path('register/', register_user, name="register_user"),
+
     #################### User Profile ###################
     path('user_profile/', get_user_data, name='get_user_data'),
-    path('user_profile/edit', update_user_data, name='update_user_data'),
+    path('user_profile/edit/', update_user_data, name='update_user_data'),
 
     path('', include(router.urls)),
 ]
