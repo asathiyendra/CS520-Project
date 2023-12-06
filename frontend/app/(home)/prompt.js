@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from "react";
+
 import {
   Heading,
   Select,
@@ -20,20 +22,29 @@ import {
 } from "@gluestack-ui/themed";
 
 import Screen from "../../components/Screen";
+import { getRandomPrompt } from "../../components/apiCalls";
 
 export default function prompt() {
+  const [prompt, setPrompt] = useState(null);
+
+  useEffect(() => {
+    getRandomPrompt().then((prompt) => {
+      setPrompt(prompt);
+    });
+  }, []);
+
   return (
     <Screen>
       <Heading textAlign="center" mb="$5">
         Today's Question
       </Heading>
       <Heading size="sm" color="$amber500" textAlign="center" mb="$5">
-        What is your favorite color?
+        {!prompt ? "Waiting for prompt..." : prompt.text}
       </Heading>
 
       <FormControl>
         <Textarea size={"lg"} isInvalid={false} isDisabled={false} mb="$5">
-          <TextareaInput placeholder="Your text goes here..." />
+          <TextareaInput role="none" placeholder="Your text goes here..." />
         </Textarea>
       </FormControl>
 
