@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Prompt
 from .serializers import PromptSerializer
@@ -23,4 +24,11 @@ class PromptViewSet(viewsets.ModelViewSet):
         random_index = random.randint(0, count - 1)
         prompt = Prompt.objects.all()[random_index]
         return Response(PromptSerializer(prompt).data)
+    
+@api_view(['GET'])
+def get_previous_prompts(request):
+    previous_prompts = Prompt.objects.all()
+    serializer = PromptSerializer(previous_prompts, many=True)
+    
+    return Response(serializer.data, status=200)
     

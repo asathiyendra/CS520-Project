@@ -21,6 +21,7 @@ from prompts.views import PromptViewSet
 from responses.views import store_response, get_friends_responses, get_response_details
 from Friendships.views import get_friends, add_friend, delete_friend, get_friend_details
 from users.views import user_login, register_user, get_user_data, update_user_data
+from prompts.views import get_previous_prompts
 
 
 
@@ -38,6 +39,9 @@ urlpatterns = [
     path('friendships/add/', add_friend, name='add_friend'),
     path('friendships/delete/', delete_friend, name='delete_friend'),
     path('friendships/details/', get_friend_details, name='get_friend_details'),
+
+    ################# Previous Prompts ##################
+    path('previous_prompts/', get_previous_prompts, name='get_previous_prompts'),
 
     ################## User Login ####################
     path('login/', user_login, name="user_login"),
