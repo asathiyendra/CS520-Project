@@ -3,9 +3,15 @@ import { ArrowRight } from "lucide-react-native";
 
 import { router } from "expo-router";
 
-const ResponseCard = ({ index, username, response, responseLength = 40 }) => {
+const ResponseCard = ({
+  index,
+  id,
+  username,
+  response,
+  responseLength = 40,
+}) => {
   return (
-    <Pressable onPress={() => router.push(`/response/${username}`)}>
+    <Pressable onPress={() => router.push(`/response/${id}`)}>
       <HStack
         alignItems="center"
         bg={index % 2 == 0 ? "$pink100" : "$pink50"}

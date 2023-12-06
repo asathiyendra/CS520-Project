@@ -33,9 +33,18 @@ async function getFriends() {
   return data;
 }
 
+async function getResponseById(responseId) {
+  const data = await apiCall(
+    "getResponseDetails/",
+    "GET",
+    (params = { responseid: responseId })
+  );
+  return data;
+}
+
 async function getRandomPrompt() {
   const data = await apiCall("prompts/random_prompt/", "GET");
   return data;
 }
 
-export { getRandomPrompt, getFriends };
+export { getRandomPrompt, getFriends, getResponseById };

@@ -1,4 +1,6 @@
 import {
+  Badge,
+  BadgeText,
   Box,
   Button,
   ButtonText,
@@ -20,6 +22,7 @@ import {
 } from "@gluestack-ui/themed";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 
+import { getResponseById } from "../../components/apiCalls";
 import Screen from "../../components/Screen";
 import { useEffect, useRef, useState } from "react";
 
@@ -102,12 +105,17 @@ export default function response() {
   const { id } = useLocalSearchParams();
   const navigation = useNavigation();
 
+  const [response, setResponse] = useState(null);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const modalRef = useRef(null);
 
   useEffect(() => {
+    getResponseById(id).then((data) => setResponse(data));
+  }, []);
+
+  useEffect(() => {
     navigation.setOptions({
-      title: `${id}`,
+      title: `Prompt ID ${id}`,
     });
   }, []);
 
@@ -115,11 +123,16 @@ export default function response() {
     return (
       <Box>
         <Text size="lg" textAlign="center" mb="$5">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          {response ? response.text : "Loading..."}
         </Text>
         <HStack justifyContent="space-around" my="$5">
           <Button size="sm">
-            <ButtonText>Likes</ButtonText>
+            <ButtonText>Likes </ButtonText>
+            {response && (
+              <Badge size="sm" borderRadius="$full" action="muted">
+                <BadgeText>{response.likes_count}</BadgeText>
+              </Badge>
+            )}
           </Button>
           <Button
             onPress={() => setShowCommentModal(true)}
@@ -127,7 +140,12 @@ export default function response() {
             size="sm"
             bg={"$green500"}
           >
-            <ButtonText>Comments</ButtonText>
+            <ButtonText>Comments </ButtonText>
+            {response && (
+              <Badge size="sm" borderRadius="$full" action="muted">
+                <BadgeText>{response.comments_count}</BadgeText>
+              </Badge>
+            )}
           </Button>
           <Button size="sm" bg="$yellow500">
             <ButtonText>Share</ButtonText>
@@ -180,12 +198,12 @@ export default function response() {
     <Screen justifyContent="flex-start">
       <FlatList
         ListHeaderComponent={renderTop}
-        data={COMMENTS}
+        data={response ? response.comments : []}
         ListEmptyComponent={<Text>No comments for this post.</Text>}
         renderItem={({ item, index }) => (
           <Box p="$4" bg={index % 2 == 0 ? "$pink100" : "$pink50"}>
-            <Text fontWeight="bold">{item.user.name}</Text>
-            <Text>{item.response}</Text>
+            <Text fontWeight="bold">UserID: {item.userid}</Text>
+            <Text>{item.text}</Text>
           </Box>
         )}
       ></FlatList>

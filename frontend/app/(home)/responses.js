@@ -87,6 +87,7 @@ export default function responses() {
           <ResponseCard
             key={item.id}
             index={index}
+            id={item.id}
             username={item.user.name}
             response={item.response}
           />
