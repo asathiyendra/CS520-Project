@@ -100,4 +100,14 @@ def get_response_details(request):
 
     return Response(response_details)
 
-
+@api_view(['GET'])
+def get_prompt_responses(request):
+    promptid = request.GET.get('promptid')
+    try:
+        responses = Responses.objects.get(promptid=promptid)
+    except Responses.DoesNotExist:
+        return Response({'error': 'Responses does not exist'}, status=404)
+    
+    serializer = ResponseSerializer(responses, many=True)
+    
+    return Response(serializer.data, status=200)
