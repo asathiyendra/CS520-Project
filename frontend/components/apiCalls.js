@@ -51,6 +51,11 @@ async function getRandomPrompt() {
   return data;
 }
 
+async function getAllPreviousPrompts() {
+  const data = await apiCall("previous_prompts", "GET");
+  return data;
+}
+
 async function signIn(username, password) {
   const data = await apiCall(
     "login/",
@@ -78,4 +83,11 @@ async function register(username, password, email) {
   return data;
 }
 
-export { getRandomPrompt, getFriends, getResponseById, signIn, register };
+export {
+  getRandomPrompt,
+  getFriends,
+  getResponseById,
+  signIn,
+  register,
+  getAllPreviousPrompts,
+};

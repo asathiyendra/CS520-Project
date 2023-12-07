@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from "react";
+
 import {
   Box,
   FlatList,
@@ -7,9 +9,10 @@ import {
   Text,
 } from "@gluestack-ui/themed";
 import { router } from "expo-router";
-
-import Screen from "../../components/Screen";
 import { ArrowRightIcon } from "lucide-react-native";
+
+import { getAllPreviousPrompts } from "../../components/apiCalls";
+import Screen from "../../components/Screen";
 
 const PREVIOUS_PROMPTS = [
   {
@@ -33,21 +36,36 @@ const PREVIOUS_PROMPTS = [
 ];
 
 export default function history() {
+  const [prompts, setPrompts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getAllPreviousPrompts().then((prompts) => {
+      setLoading(false);
+      setPrompts(prompts);
+    });
+  });
   return (
     <Screen justifyContent="flex-start">
       <FlatList
-        data={PREVIOUS_PROMPTS}
-        keyExtractor={(item) => item.id.toString()}
+        data={prompts}
+        ListEmptyComponent={
+          <Text textAlign="center">
+            {loading ? "Loading..." : "No previous propmts found."}
+          </Text>
+        }
+        keyExtractor={(item) => item.promptid.toString()}
         renderItem={({ item, index }) => (
           <Pressable
-            onPress={() => router.push(`/history/${item.id}`)}
+            onPress={() => router.push(`/history/${item.promptid}`)}
             p="$4"
             bg={index % 2 == 0 ? "$pink100" : "$pink50"}
           >
             <HStack alignItems="center" justifyContent="space-between">
               <Box>
                 <Text fontWeight="bold">{item.date}</Text>
-                <Text>{item.prompt}</Text>
+                <Text>{item.text}</Text>
               </Box>
               <Icon as={ArrowRightIcon} size="lg" />
             </HStack>
