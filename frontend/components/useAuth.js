@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signIn } from "./apiCalls";
+import { signIn, register } from "./apiCalls";
 
 export default function useAuth() {
   const [user, setUser] = useState(null);
@@ -25,5 +25,30 @@ export default function useAuth() {
     });
   };
 
-  return { user, loginWithUsernameAndPassword };
+  const registerWithUsernameAndPassword = (
+    username,
+    password,
+    email,
+    callbackFn = null
+  ) => {
+    register(username, password, email).then((data) => {
+      if (data.error) {
+        if (callbackFn) {
+          return callbackFn(data.error);
+        }
+      }
+
+      setUser(data);
+
+      if (callbackFn) {
+        return callbackFn(null);
+      }
+    });
+  };
+
+  return {
+    user,
+    loginWithUsernameAndPassword,
+    registerWithUsernameAndPassword,
+  };
 }

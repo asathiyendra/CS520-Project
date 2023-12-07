@@ -64,4 +64,18 @@ async function signIn(username, password) {
   return data;
 }
 
-export { getRandomPrompt, getFriends, getResponseById, signIn };
+async function register(username, password, email) {
+  const data = await apiCall(
+    "register/",
+    "POST",
+    {},
+    {
+      username: username,
+      password: password,
+      email: email,
+    }
+  );
+  return data;
+}
+
+export { getRandomPrompt, getFriends, getResponseById, signIn, register };
