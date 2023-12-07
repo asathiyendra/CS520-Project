@@ -7,10 +7,6 @@ export const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    console.log("user updated: ", user);
-  }, [user]);
-
   const loginWithUsernameAndPassword = (
     username,
     password,

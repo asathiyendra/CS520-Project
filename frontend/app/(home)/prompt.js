@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import {
   Heading,
@@ -19,19 +19,62 @@ import {
   FormControl,
   Button,
   ButtonText,
+  FormControlError,
+  FormControlErrorIcon,
+  AlertCircleIcon,
+  FormControlErrorText,
+  ButtonSpinner,
 } from "@gluestack-ui/themed";
 
 import Screen from "../../components/Screen";
-import { getRandomPrompt } from "../../components/apiCalls";
+import { DataContext } from "../../components/dataContext";
+import { AuthContext } from "../../components/AuthContext";
 
 export default function prompt() {
-  const [prompt, setPrompt] = useState(null);
+  const { todayPrompt, getTodayPrompt, submitResponse } =
+    useContext(DataContext);
+  const { user } = useContext(AuthContext);
+  const [answer, setAnswer] = useState("");
+  const [answerError, setAnswerError] = useState(null);
+  const [visibility, setVisibility] = useState("public");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getRandomPrompt().then((prompt) => {
-      setPrompt(prompt);
+    setLoading(true);
+    getTodayPrompt(() => {
+      setLoading(false);
     });
   }, []);
+
+  const onSubmit = () => {
+    // reset errors
+    setAnswerError(null);
+
+    // answer cannot be empty
+    if (answer === "") {
+      setAnswerError("Answer cannot be empty");
+      return;
+    }
+
+    setLoading(true);
+    submitResponse(
+      user.userid,
+      todayPrompt.promptid,
+      answer,
+      visibility,
+      (error) => {
+        setLoading(false);
+        if (error) {
+          setAnswerError(error);
+          return;
+        } else {
+          // redirect to responses page
+          // show success message
+          console.log("success");
+        }
+      }
+    );
+  };
 
   return (
     <Screen>
@@ -39,16 +82,28 @@ export default function prompt() {
         Today's Question
       </Heading>
       <Heading size="sm" color="$amber500" textAlign="center" mb="$5">
-        {!prompt ? "Waiting for prompt..." : prompt.text}
+        {loading ? "Waiting for prompt..." : todayPrompt?.text}
       </Heading>
 
-      <FormControl>
-        <Textarea size={"lg"} isInvalid={false} isDisabled={false} mb="$5">
-          <TextareaInput role="none" placeholder="Your text goes here..." />
+      <FormControl isInvalid={answerError} mb="$5">
+        <Textarea size={"lg"} isDisabled={false}>
+          <TextareaInput
+            role="none"
+            placeholder="Your text goes here..."
+            value={answer}
+            onChangeText={setAnswer}
+          />
         </Textarea>
+
+        {answerError && (
+          <FormControlError>
+            <FormControlErrorIcon as={AlertCircleIcon} />
+            <FormControlErrorText>{answerError}</FormControlErrorText>
+          </FormControlError>
+        )}
       </FormControl>
 
-      <Select mb="$5">
+      <Select mb="$5" selectedValue={visibility} onValueChange={setVisibility}>
         <SelectTrigger variant="outline" size="md">
           <SelectInput placeholder="Select answer's visibility" />
           <SelectIcon mr="$3">
@@ -63,12 +118,18 @@ export default function prompt() {
             </SelectDragIndicatorWrapper>
             <SelectItem label="Public" value="public" />
             <SelectItem label="Private" value="private" />
+            <SelectItem label="" value="" />
           </SelectContent>
         </SelectPortal>
       </Select>
 
-      <Button action={"primary"} variant={"solid"} isDisabled={false}>
-        <ButtonText>Submit Response</ButtonText>
+      <Button
+        action={"primary"}
+        variant={"solid"}
+        isDisabled={false}
+        onPress={onSubmit}
+      >
+        {loading ? <ButtonSpinner /> : <ButtonText>Submit Response</ButtonText>}
       </Button>
     </Screen>
   );

@@ -83,6 +83,21 @@ async function register(username, password, email) {
   return data;
 }
 
+async function postResponse(userId, promptId, answer, visibility) {
+  const data = await apiCall(
+    "store_response/",
+    "POST",
+    {},
+    {
+      userid: userId,
+      promptid: promptId,
+      text: answer,
+      visibility: visibility,
+    }
+  );
+  return data;
+}
+
 export {
   getRandomPrompt,
   getFriends,
@@ -90,4 +105,5 @@ export {
   signIn,
   register,
   getAllPreviousPrompts,
+  postResponse,
 };
