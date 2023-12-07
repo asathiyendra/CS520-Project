@@ -45,7 +45,7 @@ export default function history() {
       setLoading(false);
       setPrompts(prompts);
     });
-  });
+  }, []);
   return (
     <Screen justifyContent="flex-start">
       <FlatList
