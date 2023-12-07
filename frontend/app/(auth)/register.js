@@ -17,12 +17,13 @@ import {
   LinkText,
   ButtonSpinner,
 } from "@gluestack-ui/themed";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 import useAuth from "../../components/useAuth";
 import Screen from "../../components/Screen";
 
 export default function register() {
+  const router = useRouter();
   const { registerWithUsernameAndPassword } = useAuth();
 
   const [username, setUsername] = useState("");
@@ -69,8 +70,7 @@ export default function register() {
       if (error) {
         setAuthError(error);
       } else {
-        // redirect to prompt page.
-        console.log("redirect to prompt page");
+        router.replace("/prompt");
       }
     });
   };

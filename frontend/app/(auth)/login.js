@@ -4,12 +4,8 @@ import {
   Button,
   ButtonText,
   FormControl,
-  FormControlError,
-  FormControlErrorIcon,
-  FormControlErrorText,
   Input,
   InputField,
-  AlertCircleIcon,
   VStack,
   Heading,
   Box,
@@ -17,12 +13,13 @@ import {
   Text,
   ButtonSpinner,
 } from "@gluestack-ui/themed";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 import useAuth from "../../components/useAuth";
 import Screen from "../../components/Screen";
 
 export default function login() {
+  const router = useRouter();
   const { loginWithUsernameAndPassword } = useAuth();
 
   const [username, setUsername] = useState("");
@@ -47,8 +44,7 @@ export default function login() {
       if (error) {
         setAuthError(error);
       } else {
-        // redirect to prompt page.
-        console.log("redirect to prompt page");
+        router.replace("/prompt");
       }
     });
   };

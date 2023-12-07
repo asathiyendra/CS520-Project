@@ -16,7 +16,7 @@ async function apiCall(destinationUrl, method, params = {}, body = {}) {
   try {
     const res = await fetch(`${API_URL}${destinationUrl}`, {
       method: method,
-      body: formData,
+      body: Object.keys(body).length > 0 ? formData : null,
     });
 
     const data = await res.json();
@@ -47,7 +47,7 @@ async function getResponseById(responseId) {
 }
 
 async function getRandomPrompt() {
-  const data = await apiCall("prompts/random_prompt/", "GET");
+  const data = await apiCall("prompts/random_prompt/", "GET", {}, {});
   return data;
 }
 
