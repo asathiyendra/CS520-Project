@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import {
   Box,
@@ -19,12 +19,12 @@ import {
 } from "@gluestack-ui/themed";
 import { Link, useRouter } from "expo-router";
 
-import useAuth from "../../components/useAuth";
+import { AuthContext } from "../../components/AuthContext";
 import Screen from "../../components/Screen";
 
 export default function register() {
   const router = useRouter();
-  const { registerWithUsernameAndPassword } = useAuth();
+  const { registerWithUsernameAndPassword } = useContext(AuthContext);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

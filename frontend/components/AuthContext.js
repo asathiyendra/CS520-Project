@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { createContext, useState, useEffect } from "react";
+
 import { signIn, register } from "./apiCalls";
 
-export default function useAuth() {
+export const AuthContext = createContext(null);
+
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    console.log("user updated: ", user);
+  }, [user]);
 
   const loginWithUsernameAndPassword = (
     username,
@@ -10,7 +17,6 @@ export default function useAuth() {
     callbackFn = null
   ) => {
     signIn(username, password).then((data) => {
-      console.log(data);
       if (data.error) {
         if (callbackFn) {
           return callbackFn(data.error);
@@ -46,9 +52,20 @@ export default function useAuth() {
     });
   };
 
-  return {
-    user,
-    loginWithUsernameAndPassword,
-    registerWithUsernameAndPassword,
+  const signOut = () => {
+    setUser(null);
   };
-}
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        loginWithUsernameAndPassword,
+        registerWithUsernameAndPassword,
+        signOut,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
