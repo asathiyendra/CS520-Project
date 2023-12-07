@@ -27,35 +27,18 @@ export default function login() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [usernameError, setUsernameError] = useState(null);
-  const [passwordError, setPasswordError] = useState(null);
   const [authError, setAuthError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const onSubmit = () => {
     // reset errors
-    setUsernameError(null);
-    setPasswordError(null);
     setAuthError(null);
 
     // username and password cannot be empty
     if (username === "" || password === "") {
-      setUsernameError("Username cannot be empty");
-      setPasswordError("Password cannot be empty");
+      setAuthError("Username and password cannot be empty");
       return;
     }
-
-    // // password must be at least 6 characters
-    // if (password.length < 6) {
-    //   setPasswordError("Password must be at least 6 characters");
-    //   return;
-    // }
-
-    // // username must be at least 3 characters
-    // if (username.length < 3) {
-    //   setUsernameError("Username must be at least 3 characters");
-    //   return;
-    // }
 
     setLoading(true);
 
@@ -91,7 +74,7 @@ export default function login() {
       )}
 
       <VStack space="xl" mb="$10">
-        <FormControl size={"md"} isRequired={false} isInvalid={usernameError}>
+        <FormControl size={"md"} isRequired={false}>
           <Input>
             <InputField
               type="text"
@@ -100,16 +83,9 @@ export default function login() {
               value={username}
             />
           </Input>
-
-          {usernameError && (
-            <FormControlError>
-              <FormControlErrorIcon as={AlertCircleIcon} />
-              <FormControlErrorText>{usernameError}</FormControlErrorText>
-            </FormControlError>
-          )}
         </FormControl>
 
-        <FormControl size={"md"} isRequired={false} isInvalid={passwordError}>
+        <FormControl size={"md"} isRequired={false}>
           <Input>
             <InputField
               type="password"
@@ -118,20 +94,13 @@ export default function login() {
               value={password}
             />
           </Input>
-
-          {passwordError && (
-            <FormControlError>
-              <FormControlErrorIcon as={AlertCircleIcon} />
-              <FormControlErrorText>{passwordError}</FormControlErrorText>
-            </FormControlError>
-          )}
         </FormControl>
       </VStack>
 
       <Button
         action={"primary"}
         variant={"solid"}
-        isDisabled={false}
+        isDisabled={loading}
         onPress={onSubmit}
       >
         {loading ? <ButtonSpinner /> : <ButtonText>Login</ButtonText>}
