@@ -17,7 +17,8 @@ def user_login(request):
         return Response({'error': 'User does not exist'}, status=404)
 
     if user.authenticate(password):
-        return Response({'message': 'Login Successful'}, status=200)
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=200)
     else:
         return Response({'error' : 'Invalid Password'}, status=401)
 
