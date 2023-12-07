@@ -80,6 +80,7 @@ const FRIENDS = [
 
 export default function friends() {
   const [friends, setFriends] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [removeFlag, setRemoveFlag] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const modalRef = useRef(null);
@@ -90,10 +91,12 @@ export default function friends() {
   };
 
   useEffect(() => {
+    setLoading(true);
     getFriends().then((friends) => {
+      setLoading(false);
       setFriends(friends);
     });
-  });
+  }, []);
 
   const renderTop = () => {
     return (
@@ -152,7 +155,11 @@ export default function friends() {
       <FlatList
         ListHeaderComponent={renderTop}
         data={friends}
-        ListEmptyComponent={<Text textAlign="center">No friends found.</Text>}
+        ListEmptyComponent={
+          <Text textAlign="center">
+            {loading ? "Loading..." : "No friends found."}
+          </Text>
+        }
         renderItem={({ item, index }) => (
           <Pressable onPress={() => router.push(`friend/${item.id}`)}>
             <HStack
