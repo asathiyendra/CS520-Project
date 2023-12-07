@@ -1,6 +1,6 @@
 import { API_URL } from "./constants";
 
-async function apiCall(destinationUrl, method, params = {}) {
+async function apiCall(destinationUrl, method, params = {}, body = {}) {
   if (Object.keys(params).length > 0) {
     // convert params object a query string
     const paramsArray = Object.entries(params);
@@ -10,9 +10,13 @@ async function apiCall(destinationUrl, method, params = {}) {
     destinationUrl = `${destinationUrl}?${paramsString}`;
   }
 
+  const formData = new FormData();
+  Object.keys(body).map((key) => formData.append(key, body[key]));
+
   try {
     const res = await fetch(`${API_URL}${destinationUrl}`, {
       method: method,
+      body: formData,
     });
 
     const data = await res.json();
@@ -47,4 +51,17 @@ async function getRandomPrompt() {
   return data;
 }
 
-export { getRandomPrompt, getFriends, getResponseById };
+async function signIn(username, password) {
+  const data = await apiCall(
+    "login/",
+    "POST",
+    {},
+    {
+      username: username,
+      password: password,
+    }
+  );
+  return data;
+}
+
+export { getRandomPrompt, getFriends, getResponseById, signIn };
