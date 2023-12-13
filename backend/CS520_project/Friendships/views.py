@@ -6,13 +6,36 @@ from rest_framework.response import Response
 from responses.models import Responses
 from .models import Friendships, Users
 from .serializers import UserSerializer
+from .serializers import FriendshipsSerializer1, FriendshipsSerializer2
 from responses.serializers import ResponseSerializer
 from rest_framework.decorators import api_view
 from django.db.models import Q
 
 
 # Create your views here.
+@api_view(['GET'])
+def get_friends(request):
+    userid = request.GET.get('userid')
+    try:
+        user = Users.objects.get(userid=userid)
+    except Users.DoesNotExist:
+        return Response({'error': 'User does not exist'}, status=404)
 
+    friendships = Friendships.objects.filter(Q(user1id=user) | Q(user2id=user))
+
+    friends1 = []
+    friends2 = []
+    for friendship in friendships:
+        if friendship.user1id == user:
+            friends1.append(friendship)
+        else:
+            friends2.append(friendship)
+
+    friends_serializer1 = FriendshipsSerializer1(friends1, many=True)
+    friends_serializer2 = FriendshipsSerializer2(friends2, many=True)
+
+    return Response(friends_serializer1.data + friends_serializer2.data)
+'''
 @api_view(['GET'])
 def get_friends(request):
     userid = request.GET.get('userid')
@@ -33,7 +56,7 @@ def get_friends(request):
     friends_serializer = UserSerializer(friends, many=True)
 
     return Response(friends_serializer.data)
-
+'''
 @api_view(['DELETE'])
 def delete_friend(request):
     userid = request.data.get('userid')
