@@ -19,8 +19,8 @@ git clone https://github.com/asathiyendra/CS520-Project
 ```
 
 2. (Backend) Install dependencies:
-   > [!WARNING]
-   > Make sure you're in the project's root directory
+> [!WARNING]
+> Make sure you're in the project's root directory
 
 ```
 cd backend/
@@ -28,8 +28,8 @@ python -m pip install -r requirements.txt
 ```
 
 3. (Frontend) Install dependencies:
-   > [!WARNING]
-   > Make sure you're in the project's root directory
+> [!WARNING]
+> Make sure you're in the project's root directory
 
 ```
 cd frontend/
