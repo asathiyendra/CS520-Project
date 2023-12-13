@@ -21,6 +21,7 @@ import {
   ButtonIcon,
   Pressable,
   Box,
+  ButtonSpinner,
 } from "@gluestack-ui/themed";
 import { ArrowRightIcon, User } from "lucide-react-native";
 
@@ -29,7 +30,8 @@ import { DataContext } from "../../components/dataContext";
 import { AuthContext } from "../../components/AuthContext";
 
 export default function friends() {
-  const { getMyFriends, addFriend, friends } = useContext(DataContext);
+  const { getMyFriends, addFriend, friends, deleteMyFriend } =
+    useContext(DataContext);
   const { user } = useContext(AuthContext);
   const [friendUsernameOrEmail, setFriendUsernameOrEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,9 +39,15 @@ export default function friends() {
   const [showAddModal, setShowAddModal] = useState(false);
   const modalRef = useRef(null);
 
-  const removeFriend = (username) => {
-    // const newFriends = friends.filter((friend) => friend.username != username);
-    // setFriends(newFriends);
+  const removeFriend = (friendid) => {
+    deleteMyFriend(user.userid, friendid, (error) => {
+      if (error) {
+        alert(error);
+      } else {
+        alert("Friend removed!");
+      }
+    });
+    getFriends();
   };
 
   const onAddFriend = () => {
@@ -48,6 +56,7 @@ export default function friends() {
       return;
     }
 
+    setLoading(true);
     addFriend(user.userid, friendUsernameOrEmail, (error) => {
       if (error) {
         alert(error);
@@ -55,10 +64,11 @@ export default function friends() {
         alert("Friend request sent.");
       }
       setShowAddModal(false);
+      setLoading(false);
     });
   };
 
-  useEffect(() => {
+  const getFriends = () => {
     setLoading(true);
     getMyFriends(user.userid, (error) => {
       setLoading(false);
@@ -66,6 +76,10 @@ export default function friends() {
         alert(error);
       }
     });
+  };
+
+  useEffect(() => {
+    getFriends();
   }, []);
 
   const renderTop = () => {
@@ -95,6 +109,8 @@ export default function friends() {
   return (
     <Screen justifyContent="flex-start">
       <FlatList
+        refreshing={loading}
+        onRefresh={() => getFriends()}
         ListHeaderComponent={renderTop}
         data={friends}
         ListEmptyComponent={
@@ -103,7 +119,7 @@ export default function friends() {
           </Text>
         }
         renderItem={({ item, index }) => (
-          <Pressable onPress={() => router.push(`friend/${item.id}`)}>
+          <Pressable onPress={() => router.push(`friend/${item.userid}`)}>
             <HStack
               justifyContent="space-between"
               alignItems="center"
@@ -113,7 +129,7 @@ export default function friends() {
             >
               {removeFlag ? (
                 <Button
-                  onPress={() => removeFriend(item.username)}
+                  onPress={() => removeFriend(item.userid)}
                   action="negative"
                   size="xs"
                 >
@@ -160,10 +176,14 @@ export default function friends() {
             <Button
               action={"positive"}
               variant={"solid"}
-              isDisabled={false}
+              isDisabled={loading}
               onPress={onAddFriend}
             >
-              <ButtonText>Add</ButtonText>
+              {loading ? (
+                <ButtonSpinner />
+              ) : (
+                <ButtonText>Add Friend</ButtonText>
+              )}
             </Button>
             <Text fontStyle="italic" textAlign="center" my="$5">
               Friend will be added once they accept the request.

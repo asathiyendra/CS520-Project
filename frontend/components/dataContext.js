@@ -4,6 +4,7 @@ import {
   postResponse,
   postAddFriend,
   getFriends,
+  deleteFriend,
 } from "./apiCalls";
 
 export const DataContext = createContext(null);
@@ -29,6 +30,20 @@ export const DataProvider = ({ children }) => {
 
   const addFriend = (userId, usernameOrEmail, callbackFn = null) => {
     postAddFriend(userId, usernameOrEmail).then((data) => {
+      if (data.error) {
+        if (callbackFn) {
+          return callbackFn(data.error);
+        }
+      } else {
+        if (callbackFn) {
+          return callbackFn(null);
+        }
+      }
+    });
+  };
+
+  const deleteMyFriend = (userId, friendId, callbackFn = null) => {
+    deleteFriend(userId, friendId).then((data) => {
       if (data.error) {
         if (callbackFn) {
           return callbackFn(data.error);
@@ -81,6 +96,7 @@ export const DataProvider = ({ children }) => {
         friends,
         setFriends,
         getMyFriends,
+        deleteMyFriend,
       }}
     >
       {children}

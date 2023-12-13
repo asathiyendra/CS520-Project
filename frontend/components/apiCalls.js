@@ -37,6 +37,19 @@ async function getFriends(userId) {
   return data;
 }
 
+async function deleteFriend(userId, friendId) {
+  const data = await apiCall(
+    "friendships/delete/",
+    "DELETE",
+    {},
+    {
+      userid: userId,
+      friendid: friendId,
+    }
+  );
+  return data;
+}
+
 async function postAddFriend(userId, usernameOrEmail) {
   const data = await apiCall(
     "friendships/add/",
@@ -120,4 +133,5 @@ export {
   getAllPreviousPrompts,
   postResponse,
   postAddFriend,
+  deleteFriend,
 };
