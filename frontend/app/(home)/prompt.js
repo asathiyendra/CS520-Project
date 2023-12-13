@@ -25,6 +25,7 @@ import {
   FormControlErrorText,
   ButtonSpinner,
 } from "@gluestack-ui/themed";
+import { router } from "expo-router";
 
 import Screen from "../../components/Screen";
 import { DataContext } from "../../components/dataContext";
@@ -69,8 +70,8 @@ export default function prompt() {
           return;
         } else {
           // redirect to responses page
-          // show success message
-          console.log("success");
+          alert("Response submitted successfully!");
+          router.replace("responses/");
         }
       }
     );

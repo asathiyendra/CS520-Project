@@ -70,6 +70,7 @@ export default function register() {
       if (error) {
         setAuthError(error);
       } else {
+        alert("Registration successful!");
         router.replace("/prompt");
       }
     });

@@ -44,6 +44,7 @@ export default function login() {
       if (error) {
         setAuthError(error);
       } else {
+        alert("Login successful!");
         router.replace("/prompt");
       }
     });
