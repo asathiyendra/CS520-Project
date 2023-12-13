@@ -1,4 +1,4 @@
-import { Button, ButtonText, VStack } from "@gluestack-ui/themed";
+import { Button, ButtonText, VStack, Heading } from "@gluestack-ui/themed";
 import { Link } from "expo-router";
 
 import Screen from "../components/Screen";
@@ -6,6 +6,9 @@ import Screen from "../components/Screen";
 export default function index() {
   return (
     <Screen>
+      <Heading mb="$5" textAlign="center">
+        Welcome to Question of the Day!
+      </Heading>
       <VStack space="md">
         <Link href="/login" asChild>
           <Button active={"primary"} variant={"solid"}>
@@ -17,7 +20,7 @@ export default function index() {
             <ButtonText>Register Page</ButtonText>
           </Button>
         </Link>
-        <Link href="/prompt" asChild>
+        {/* <Link href="/prompt" asChild>
           <Button active={"primary"} variant={"solid"}>
             <ButtonText>Prompt Page</ButtonText>
           </Button>
@@ -41,7 +44,7 @@ export default function index() {
           <Button active={"primary"} variant={"solid"}>
             <ButtonText>Profile Page</ButtonText>
           </Button>
-        </Link>
+        </Link> */}
       </VStack>
     </Screen>
   );

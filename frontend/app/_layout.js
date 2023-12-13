@@ -13,7 +13,6 @@ export default function Layout() {
             screenOptions={{
               headerShown: false,
             }}
-            initialRouteName="login"
           />
         </DataProvider>
       </AuthProvider>
