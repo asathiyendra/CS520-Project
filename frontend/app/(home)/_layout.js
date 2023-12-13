@@ -1,8 +1,21 @@
+import { router } from "expo-router";
 import { Icon } from "@gluestack-ui/themed";
 import { Tabs } from "expo-router/tabs";
 import { History, MessageCircle, Settings, Users } from "lucide-react-native";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../../components/AuthContext";
 
 export default function Layout() {
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/login");
+    } else {
+      router.replace("/prompt");
+    }
+  }, [user]);
+
   return (
     <Tabs>
       <Tabs.Screen
