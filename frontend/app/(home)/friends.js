@@ -24,24 +24,22 @@ import {
 } from "@gluestack-ui/themed";
 import { ArrowRightIcon, User } from "lucide-react-native";
 
-import { getFriends } from "../../components/apiCalls";
 import Screen from "../../components/Screen";
 import { DataContext } from "../../components/dataContext";
 import { AuthContext } from "../../components/AuthContext";
 
 export default function friends() {
-  const { addFriend } = useContext(DataContext);
+  const { getMyFriends, addFriend, friends } = useContext(DataContext);
   const { user } = useContext(AuthContext);
   const [friendUsernameOrEmail, setFriendUsernameOrEmail] = useState("");
-  const [friends, setFriends] = useState(null);
   const [loading, setLoading] = useState(false);
   const [removeFlag, setRemoveFlag] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const modalRef = useRef(null);
 
   const removeFriend = (username) => {
-    const newFriends = friends.filter((friend) => friend.username != username);
-    setFriends(newFriends);
+    // const newFriends = friends.filter((friend) => friend.username != username);
+    // setFriends(newFriends);
   };
 
   const onAddFriend = () => {
@@ -62,9 +60,11 @@ export default function friends() {
 
   useEffect(() => {
     setLoading(true);
-    getFriends().then((friends) => {
+    getMyFriends(user.userid, (error) => {
       setLoading(false);
-      setFriends(friends);
+      if (error) {
+        alert(error);
+      }
     });
   }, []);
 

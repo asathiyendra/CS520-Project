@@ -26,12 +26,12 @@ async function apiCall(destinationUrl, method, params = {}, body = {}) {
   }
 }
 
-async function getFriends() {
+async function getFriends(userId) {
   const data = await apiCall(
     "friendships/",
     "GET",
     (params = {
-      userid: 1,
+      userid: userId,
     })
   );
   return data;
