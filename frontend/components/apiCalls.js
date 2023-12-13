@@ -23,6 +23,7 @@ async function apiCall(destinationUrl, method, params = {}, body = {}) {
     return data;
   } catch (error) {
     console.error("Fetch error: ", error.message);
+    return { error: error.message };
   }
 }
 
@@ -124,6 +125,17 @@ async function postResponse(userId, promptId, answer, visibility) {
   return data;
 }
 
+async function getUserById(userId) {
+  const data = await apiCall(
+    "user_profile/",
+    "GET",
+    (params = {
+      userid: userId,
+    })
+  );
+  return data;
+}
+
 export {
   getRandomPrompt,
   getFriends,
@@ -134,4 +146,5 @@ export {
   postResponse,
   postAddFriend,
   deleteFriend,
+  getUserById,
 };
