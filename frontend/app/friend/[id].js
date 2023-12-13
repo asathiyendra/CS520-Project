@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useNavigation, useLocalSearchParams } from "expo-router";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useNavigation, useLocalSearchParams, router } from "expo-router";
 import {
   CloseIcon,
   Heading,
@@ -22,47 +22,47 @@ import { User } from "lucide-react-native";
 
 import Screen from "../../components/Screen";
 import ResponseCard from "../../components/ResponseCard";
+import { DataContext } from "../../components/dataContext";
+import { AuthContext } from "../../components/AuthContext";
 
-const RESPONSES = [
-  {
-    id: 1,
-    user: {
-      id: 1,
-      name: "John Doe 1",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 2,
-    user: {
-      id: 1,
-      name: "John Doe 1",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 3,
-    user: {
-      id: 1,
-      name: "John Doe 1",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-];
+const RESPONSES = [];
 
 export default function friend() {
   const { id } = useLocalSearchParams();
   const navigation = useNavigation();
+  const { getUserData, deleteMyFriend } = useContext(DataContext);
+  const { user } = useContext(AuthContext);
+  const [myFriend, setMyFriend] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [showUnfriendModal, setShowUnfriendModal] = useState(false);
   const modalRef = useRef();
 
+  const onRemoveFriend = () => {
+    deleteMyFriend(user.userid, id, (error) => {
+      if (error) {
+        alert(error);
+      } else {
+        alert("Friend removed!");
+        // redirect to friends page
+        router.canGoBack() ? router.back() : router.replace("/friends");
+      }
+      setShowUnfriendModal(false);
+    });
+  };
+
   useEffect(() => {
-    navigation.setOptions({
-      title: `User ${id}`,
+    setLoading(true);
+    getUserData(id, (error, data) => {
+      if (error) {
+        alert(error);
+      } else {
+        // setMyFriend(data);
+        navigation.setOptions({
+          title: data.username,
+        });
+      }
+      setLoading(false);
     });
   }, []);
 
@@ -81,46 +81,6 @@ export default function friend() {
           </Button>
         </HStack>
         <Icon as={User} alignSelf="center" size={80} mb="$5" />
-        {/* unfriend modal */}
-        <Modal
-          isOpen={showUnfriendModal}
-          onClose={() => setShowUnfriendModal(false)}
-          ref={modalRef}
-        >
-          <ModalBackdrop />
-          <ModalContent>
-            <ModalHeader>
-              <Heading>Unfriend?</Heading>
-              <ModalCloseButton>
-                <Icon as={CloseIcon} />
-              </ModalCloseButton>
-            </ModalHeader>
-            <ModalBody>
-              <Text>
-                Are you certain you wish to remove this friend from your list?
-              </Text>
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                onPress={() => setShowUnfriendModal(false)}
-                action={"negative"}
-                variant="solid"
-                mr="$3"
-                size="sm"
-              >
-                <ButtonText>Yes</ButtonText>
-              </Button>
-              <Button
-                onPress={() => setShowUnfriendModal(false)}
-                action={"secondary"}
-                variant="solid"
-                size="sm"
-              >
-                <ButtonText>Cancel</ButtonText>
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
       </Box>
     );
   };
@@ -130,7 +90,11 @@ export default function friend() {
       <FlatList
         ListHeaderComponent={renderTop}
         data={RESPONSES}
-        ListEmptyComponent={<Text>No responses found.</Text>}
+        ListEmptyComponent={
+          <Text textAlign="center">
+            {loading ? "Loading..." : "No responses found."}
+          </Text>
+        }
         renderItem={({ item, index }) => (
           <ResponseCard
             key={index}
@@ -140,6 +104,45 @@ export default function friend() {
           />
         )}
       />
+      <Modal
+        isOpen={showUnfriendModal}
+        onClose={() => setShowUnfriendModal(false)}
+        ref={modalRef}
+      >
+        <ModalBackdrop />
+        <ModalContent>
+          <ModalHeader>
+            <Heading>Unfriend?</Heading>
+            <ModalCloseButton>
+              <Icon as={CloseIcon} />
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
+            <Text>
+              Are you certain you wish to remove this friend from your list?
+            </Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              onPress={onRemoveFriend}
+              action={"negative"}
+              variant="solid"
+              mr="$3"
+              size="sm"
+            >
+              <ButtonText>Yes</ButtonText>
+            </Button>
+            <Button
+              onPress={() => setShowUnfriendModal(false)}
+              action={"secondary"}
+              variant="solid"
+              size="sm"
+            >
+              <ButtonText>Cancel</ButtonText>
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Screen>
   );
 }
