@@ -104,7 +104,7 @@ def get_response_details(request):
 def get_prompt_responses(request):
     promptid = request.GET.get('promptid')
     try:
-        responses = Responses.objects.get(promptid=promptid)
+        responses = Responses.objects.filter(promptid=promptid)
     except Responses.DoesNotExist:
         return Response({'error': 'Responses does not exist'}, status=404)
     
