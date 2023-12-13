@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 
-import { signIn, register } from "./apiCalls";
+import { signIn, register, updateUser } from "./apiCalls";
 
 export const AuthContext = createContext(null);
 
@@ -52,6 +52,22 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const updateUserData = (username, email, password, callbackFn = null) => {
+    updateUser(user.userid, username, email, password).then((data) => {
+      if (data.error) {
+        if (callbackFn) {
+          return callbackFn(data.error);
+        }
+      }
+
+      setUser(data);
+
+      if (callbackFn) {
+        return callbackFn(null);
+      }
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -59,6 +75,7 @@ export const AuthProvider = ({ children }) => {
         loginWithUsernameAndPassword,
         registerWithUsernameAndPassword,
         signOut,
+        updateUserData,
       }}
     >
       {children}

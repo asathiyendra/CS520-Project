@@ -136,6 +136,16 @@ async function getUserById(userId) {
   return data;
 }
 
+async function updateUser(userId, username, email, password) {
+  const data = await apiCall("user_profile/edit/", "POST", {
+    userid: userId,
+    username: username,
+    email: email,
+    password: password,
+  });
+  return data;
+}
+
 export {
   getRandomPrompt,
   getFriends,
@@ -147,4 +157,5 @@ export {
   postAddFriend,
   deleteFriend,
   getUserById,
+  updateUser,
 };
