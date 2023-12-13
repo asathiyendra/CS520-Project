@@ -3,6 +3,7 @@ import {
   getRandomPrompt,
   postResponse,
   postAddFriend,
+  postAcceptFriend,
   getFriends,
   deleteFriend,
   getUserById,
@@ -22,6 +23,20 @@ export const DataProvider = ({ children }) => {
         }
       } else {
         setFriends(data);
+        if (callbackFn) {
+          return callbackFn(null);
+        }
+      }
+    });
+  };
+
+  const acceptMyFriend = (userId, friendId, callbackFn = null) => {
+    postAcceptFriend(userId, friendId).then((data) => {
+      if (data.error) {
+        if (callbackFn) {
+          return callbackFn(data.error);
+        }
+      } else {
         if (callbackFn) {
           return callbackFn(null);
         }
@@ -111,6 +126,7 @@ export const DataProvider = ({ children }) => {
         friends,
         setFriends,
         getMyFriends,
+        acceptMyFriend,
         deleteMyFriend,
         getUserData,
       }}

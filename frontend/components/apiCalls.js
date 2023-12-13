@@ -64,6 +64,19 @@ async function postAddFriend(userId, usernameOrEmail) {
   return data;
 }
 
+async function postAcceptFriend(userId, friendId) {
+  const data = await apiCall(
+    "friendships/accept/",
+    "POST",
+    {},
+    {
+      userid: userId,
+      friendid: friendId,
+    }
+  );
+  return data;
+}
+
 async function getResponseById(responseId) {
   const data = await apiCall(
     "getResponseDetails/",
@@ -155,6 +168,7 @@ export {
   getAllPreviousPrompts,
   postResponse,
   postAddFriend,
+  postAcceptFriend,
   deleteFriend,
   getUserById,
   updateUser,

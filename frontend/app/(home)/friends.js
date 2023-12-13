@@ -30,7 +30,7 @@ import { DataContext } from "../../components/dataContext";
 import { AuthContext } from "../../components/AuthContext";
 
 export default function friends() {
-  const { getMyFriends, addFriend, friends, deleteMyFriend } =
+  const { getMyFriends, addFriend, friends, deleteMyFriend, acceptMyFriend } =
     useContext(DataContext);
   const { user } = useContext(AuthContext);
   const [friendUsernameOrEmail, setFriendUsernameOrEmail] = useState("");
@@ -78,6 +78,17 @@ export default function friends() {
     });
   };
 
+  const onAcceptFriend = (friendid) => {
+    acceptMyFriend(user.userid, friendid, (error) => {
+      if (error) {
+        alert(error);
+      } else {
+        alert("Friend accepted!");
+      }
+    });
+    getFriends();
+  };
+
   useEffect(() => {
     getFriends();
   }, []);
@@ -119,7 +130,7 @@ export default function friends() {
           </Text>
         }
         renderItem={({ item, index }) => (
-          <Pressable onPress={() => router.push(`friend/${item.userid}`)}>
+          <Pressable onPress={() => router.push(`friend/${item.user?.userid}`)}>
             <HStack
               justifyContent="space-between"
               alignItems="center"
@@ -129,7 +140,7 @@ export default function friends() {
             >
               {removeFlag ? (
                 <Button
-                  onPress={() => removeFriend(item.userid)}
+                  onPress={() => removeFriend(item.user?.userid)}
                   action="negative"
                   size="xs"
                 >
@@ -140,10 +151,25 @@ export default function friends() {
               )}
 
               <Box alignItems="center">
-                <Text fontWeight="bold">{item.username}</Text>
-                <Text>{item.email}</Text>
+                <Text fontWeight="bold">{item.user?.username}</Text>
+                <Text>{item.user?.email}</Text>
               </Box>
-              <Icon as={ArrowRightIcon} size="lg" />
+              {item.status === "pending" ? (
+                <Button
+                  action="positive"
+                  size="xs"
+                  onPress={() => onAcceptFriend(item.user?.userid)}
+                  isDisabled={loading}
+                >
+                  {loading ? (
+                    <ButtonSpinner />
+                  ) : (
+                    <ButtonText>Accept</ButtonText>
+                  )}
+                </Button>
+              ) : (
+                <Icon as={ArrowRightIcon} size="lg" />
+              )}
             </HStack>
           </Pressable>
         )}
