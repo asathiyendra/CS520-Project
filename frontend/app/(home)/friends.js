@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { router } from "expo-router";
 import {
   Button,
@@ -26,59 +26,13 @@ import { ArrowRightIcon, User } from "lucide-react-native";
 
 import { getFriends } from "../../components/apiCalls";
 import Screen from "../../components/Screen";
-
-const FRIENDS = [
-  {
-    id: 1,
-    name: "John Doe",
-    username: "johndoe1",
-    avatar: "https://i.pravatar.cc/300?img=1",
-  },
-  {
-    id: 2,
-    name: "Jane Doe",
-    username: "janedoe1",
-    avatar: "https://i.pravatar.cc/300?img=2",
-  },
-  {
-    id: 3,
-    name: "John Smith",
-    username: "johnsmith1",
-    avatar: "https://i.pravatar.cc/300?img=3",
-  },
-  {
-    id: 4,
-    name: "Jane Smith",
-    username: "janesmith1",
-    avatar: "https://i.pravatar.cc/300?img=4",
-  },
-  {
-    id: 5,
-    name: "John Doe",
-    username: "johndoe",
-    avatar: "https://i.pravatar.cc/300?img=1",
-  },
-  {
-    id: 6,
-    name: "Jane Doe",
-    username: "janedoe",
-    avatar: "https://i.pravatar.cc/300?img=2",
-  },
-  {
-    id: 7,
-    name: "John Smith",
-    username: "johnsmith",
-    avatar: "https://i.pravatar.cc/300?img=3",
-  },
-  {
-    id: 8,
-    name: "Jane Smith",
-    username: "janesmith",
-    avatar: "https://i.pravatar.cc/300?img=4",
-  },
-];
+import { DataContext } from "../../components/dataContext";
+import { AuthContext } from "../../components/AuthContext";
 
 export default function friends() {
+  const { addFriend } = useContext(DataContext);
+  const { user } = useContext(AuthContext);
+  const [friendUsernameOrEmail, setFriendUsernameOrEmail] = useState("");
   const [friends, setFriends] = useState(null);
   const [loading, setLoading] = useState(false);
   const [removeFlag, setRemoveFlag] = useState(false);
@@ -88,6 +42,22 @@ export default function friends() {
   const removeFriend = (username) => {
     const newFriends = friends.filter((friend) => friend.username != username);
     setFriends(newFriends);
+  };
+
+  const onAddFriend = () => {
+    if (friendUsernameOrEmail === "") {
+      alert("Username or email cannot be empty");
+      return;
+    }
+
+    addFriend(user.userid, friendUsernameOrEmail, (error) => {
+      if (error) {
+        alert(error);
+      } else {
+        alert("Friend request sent.");
+      }
+      setShowAddModal(false);
+    });
   };
 
   useEffect(() => {
@@ -118,34 +88,6 @@ export default function friends() {
         >
           <ButtonText>{removeFlag ? "Done" : "Remove"}</ButtonText>
         </Button>
-        <Modal
-          isOpen={showAddModal}
-          onClose={() => setShowAddModal(false)}
-          ref={modalRef}
-        >
-          <ModalBackdrop />
-          <ModalContent>
-            <ModalHeader>
-              <Heading>Add Friend</Heading>
-              <ModalCloseButton>
-                <Icon as={CloseIcon} />
-              </ModalCloseButton>
-            </ModalHeader>
-            <ModalBody>
-              <FormControl my="$5">
-                <Input>
-                  <InputField type="text" placeholder="Enter Username" />
-                </Input>
-              </FormControl>
-              <Button action={"positive"} variant={"solid"} isDisabled={false}>
-                <ButtonText>Add</ButtonText>
-              </Button>
-              <Text fontStyle="italic" textAlign="center" my="$5">
-                Friend will be added once they accept the request.
-              </Text>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
       </HStack>
     );
   };
@@ -190,6 +132,45 @@ export default function friends() {
           </Pressable>
         )}
       />
+
+      <Modal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        ref={modalRef}
+      >
+        <ModalBackdrop />
+        <ModalContent>
+          <ModalHeader>
+            <Heading>Add Friend</Heading>
+            <ModalCloseButton>
+              <Icon as={CloseIcon} />
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
+            <FormControl my="$5">
+              <Input>
+                <InputField
+                  type="text"
+                  placeholder="Enter Username or Email"
+                  onChangeText={setFriendUsernameOrEmail}
+                  value={friendUsernameOrEmail}
+                />
+              </Input>
+            </FormControl>
+            <Button
+              action={"positive"}
+              variant={"solid"}
+              isDisabled={false}
+              onPress={onAddFriend}
+            >
+              <ButtonText>Add</ButtonText>
+            </Button>
+            <Text fontStyle="italic" textAlign="center" my="$5">
+              Friend will be added once they accept the request.
+            </Text>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Screen>
   );
 }

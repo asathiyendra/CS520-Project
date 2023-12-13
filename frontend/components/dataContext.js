@@ -1,10 +1,24 @@
 import { useState, createContext } from "react";
-import { getRandomPrompt, postResponse } from "./apiCalls";
+import { getRandomPrompt, postResponse, postAddFriend } from "./apiCalls";
 
 export const DataContext = createContext(null);
 
 export const DataProvider = ({ children }) => {
   const [todayPrompt, setTodayPrompt] = useState(null);
+
+  const addFriend = (userId, usernameOrEmail, callbackFn = null) => {
+    postAddFriend(userId, usernameOrEmail).then((data) => {
+      if (data.error) {
+        if (callbackFn) {
+          return callbackFn(data.error);
+        }
+      } else {
+        if (callbackFn) {
+          return callbackFn(null);
+        }
+      }
+    });
+  };
 
   const getTodayPrompt = (callbackFn = null) => {
     getRandomPrompt().then((data) => {
@@ -42,6 +56,7 @@ export const DataProvider = ({ children }) => {
         setTodayPrompt,
         getTodayPrompt,
         submitResponse,
+        addFriend,
       }}
     >
       {children}
