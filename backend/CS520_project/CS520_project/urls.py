@@ -18,39 +18,49 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from prompts.views import PromptViewSet
-from responses.views import store_response, get_friends_responses, get_response_details, get_prompt_responses
-from Friendships.views import get_friends, add_friend, delete_friend, get_friend_details
+from responses.views import (
+    store_response,
+    get_friends_responses,
+    get_response_details,
+    get_prompt_responses,
+)
+from Friendships.views import (
+    get_friends,
+    add_friend,
+    delete_friend,
+    get_friend_details,
+    accept_friend,
+)
 from users.views import user_login, register_user, get_user_data, update_user_data
 from prompts.views import get_previous_prompts
 
 
-
 router = DefaultRouter()
-router.register(r'prompts', PromptViewSet, basename='prompt')
+router.register(r"prompts", PromptViewSet, basename="prompt")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('store_response/', store_response),
-    path('friendsResponses/', get_friends_responses, name='get_friends_responses'),
-    path('getResponseDetails/', get_response_details, name='get_response_details'),
-
+    path("store_response/", store_response),
+    path("friendsResponses/", get_friends_responses, name="get_friends_responses"),
+    path("getResponseDetails/", get_response_details, name="get_response_details"),
     #################### FRIENDSHIPS ####################
-    path('friendships/', get_friends, name='get_friends'),
-    path('friendships/add/', add_friend, name='add_friend'),
-    path('friendships/delete/', delete_friend, name='delete_friend'),
-    path('friendships/details/', get_friend_details, name='get_friend_details'),
-
+    path("friendships/", get_friends, name="get_friends"),
+    path("friendships/add/", add_friend, name="add_friend"),
+    path("friendships/delete/", delete_friend, name="delete_friend"),
+    path("friendships/accept/", accept_friend, name="accept_friend"),
+    path("friendships/details/", get_friend_details, name="get_friend_details"),
     ################# Previous Prompts ##################
-    path('previous_prompts/', get_previous_prompts, name='get_previous_prompts'),
-    path('previous_prompts/prompt_response/', get_prompt_responses, name="get_prompt_responses"),
-
+    path("previous_prompts/", get_previous_prompts, name="get_previous_prompts"),
+    path(
+        "previous_prompts/prompt_response/",
+        get_prompt_responses,
+        name="get_prompt_responses",
+    ),
     ################## User Login ####################
-    path('login/', user_login, name="user_login"),
-    path('register/', register_user, name="register_user"),
-
+    path("login/", user_login, name="user_login"),
+    path("register/", register_user, name="register_user"),
     #################### User Profile ###################
-    path('user_profile/', get_user_data, name='get_user_data'),
-    path('user_profile/edit/', update_user_data, name='update_user_data'),
-
-    path('', include(router.urls)),
+    path("user_profile/", get_user_data, name="get_user_data"),
+    path("user_profile/edit/", update_user_data, name="update_user_data"),
+    path("", include(router.urls)),
 ]
