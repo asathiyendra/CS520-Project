@@ -1,98 +1,44 @@
-import { FlatList } from "@gluestack-ui/themed";
+import { FlatList, Text } from "@gluestack-ui/themed";
 
 import Screen from "../../components/Screen";
 import ResponseCard from "../../components/ResponseCard";
-
-const RESPONSES = [
-  {
-    id: 1,
-    user: {
-      id: 1,
-      name: "John Doe 1",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 2,
-    user: {
-      id: 2,
-      name: "Jane Doe 2",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 3,
-    user: {
-      id: 3,
-      name: "John Doe 3",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 4,
-    user: {
-      id: 4,
-      name: "Jane Doe 4",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 5,
-    user: {
-      id: 5,
-      name: "John Doe 5",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 6,
-    user: {
-      id: 6,
-      name: "Jane Doe 6",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 7,
-    user: {
-      id: 7,
-      name: "John Doe 7",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 8,
-    user: {
-      id: 8,
-      name: "Jane Doe 8",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-];
+import { useContext, useEffect, useState } from "react";
+import { DataContext } from "../../components/dataContext";
+import { AuthContext } from "../../components/AuthContext";
 
 export default function responses() {
+  const { todayResponses, getMyFriendsResponses } = useContext(DataContext);
+  const { user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getMyFriendsResponses(user.userid, (error) => {
+      setLoading(false);
+      if (error) {
+        alert(error);
+      }
+    });
+  }, []);
+
   return (
     <Screen>
       <FlatList
-        data={RESPONSES}
+        data={todayResponses}
+        ListEmptyComponent={
+          <Text textAlign="center">
+            {loading ? "Loading..." : "No responses found."}
+          </Text>
+        }
         renderItem={({ item, index }) => (
           <ResponseCard
-            key={item.id}
+            key={item.responseid}
             index={index}
-            id={item.id}
-            username={item.user.name}
-            response={item.response}
+            id={item.responseid}
+            response={item.text}
           />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.responseid.toString()}
       />
     </Screen>
   );

@@ -7,6 +7,7 @@ import {
   getFriends,
   deleteFriend,
   getUserById,
+  getFriendsResponses,
 } from "./apiCalls";
 
 export const DataContext = createContext(null);
@@ -14,6 +15,7 @@ export const DataContext = createContext(null);
 export const DataProvider = ({ children }) => {
   const [todayPrompt, setTodayPrompt] = useState(null);
   const [friends, setFriends] = useState(null);
+  const [todayResponses, setTodayResponses] = useState(null);
 
   const getMyFriends = (userId, callbackFn = null) => {
     getFriends(userId).then((data) => {
@@ -81,6 +83,21 @@ export const DataProvider = ({ children }) => {
     });
   };
 
+  const getMyFriendsResponses = (userId, callbackFn = null) => {
+    getFriendsResponses(userId, todayPrompt.promptid).then((data) => {
+      if (data.error) {
+        if (callbackFn) {
+          return callbackFn(data.error);
+        }
+      } else {
+        setTodayResponses(data);
+        if (callbackFn) {
+          return callbackFn(null);
+        }
+      }
+    });
+  };
+
   const submitResponse = (
     userId,
     promptId,
@@ -129,6 +146,9 @@ export const DataProvider = ({ children }) => {
         acceptMyFriend,
         deleteMyFriend,
         getUserData,
+        getMyFriendsResponses,
+        todayResponses,
+        setTodayResponses,
       }}
     >
       {children}

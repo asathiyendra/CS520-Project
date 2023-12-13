@@ -3,13 +3,7 @@ import { ArrowRight } from "lucide-react-native";
 
 import { router } from "expo-router";
 
-const ResponseCard = ({
-  index,
-  id,
-  username,
-  response,
-  responseLength = 40,
-}) => {
+const ResponseCard = ({ index, id, response, responseLength = 40 }) => {
   return (
     <Pressable onPress={() => router.push(`/response/${id}`)}>
       <HStack
@@ -19,9 +13,6 @@ const ResponseCard = ({
         key={index}
       >
         <Box textAlign="center" flexGrow={1}>
-          <Text fontSize={20} fontWeight="bold">
-            {username}
-          </Text>
           <Text>
             {response.length > responseLength
               ? response.substring(0, responseLength) + "..."

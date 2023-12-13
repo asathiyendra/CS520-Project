@@ -159,6 +159,18 @@ async function updateUser(userId, username, email, password) {
   return data;
 }
 
+async function getFriendsResponses(userId, promptId) {
+  const data = await apiCall(
+    "friendsResponses/",
+    "GET",
+    (params = {
+      userid: userId,
+      promptid: promptId,
+    })
+  );
+  return data;
+}
+
 export {
   getRandomPrompt,
   getFriends,
@@ -172,4 +184,5 @@ export {
   deleteFriend,
   getUserById,
   updateUser,
+  getFriendsResponses,
 };
