@@ -48,8 +48,7 @@ def update_user_data(request):
     userid = request.GET.get('userid')
     try:
         user = Users.objects.get(userid=userid)
-        request.data['userid'] = user.userid
-        serializer = UserSerializer(user, data=request.data, partial=True)
+        serializer = UserSerializer(user, data=request.GET, partial=True)
         
         if serializer.is_valid():
             serializer.save()
