@@ -64,6 +64,4 @@ npx expo start
 
 ## Information
 
-**Team Members**: [Khiem Nguyen](https://github.com/ntdkhiem), [Rishik Agegya Janasawmy](https://github.com/Rishik-J), [Ajithaan Sathiyendra](https://github.com/asathiyendra)
-
-CompSci 520 Semester Project.
+**Team Members**: [Khiem Nguyen](https://github.com/ntdkhiem), [Rishik Janaswamy](https://github.com/Rishik-J), [Ajithaan Sathiyendra](https://github.com/asathiyendra)
