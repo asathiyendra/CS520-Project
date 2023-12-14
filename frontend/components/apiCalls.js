@@ -171,6 +171,28 @@ async function getFriendsResponses(userId, promptId) {
   return data;
 }
 
+async function getResponses(promptId) {
+  const data = await apiCall(
+    "previous_prompts/prompt_response/",
+    "GET",
+    (params = {
+      promptid: promptId,
+    })
+  );
+  return data;
+}
+
+async function getPromptById(promptId) {
+  const data = await apiCall(
+    "prompts/",
+    "GET",
+    (params = {
+      ID: promptId,
+    })
+  );
+  return data;
+}
+
 export {
   getRandomPrompt,
   getFriends,
@@ -185,4 +207,6 @@ export {
   getUserById,
   updateUser,
   getFriendsResponses,
+  getResponses,
+  getPromptById,
 };

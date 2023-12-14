@@ -1,47 +1,39 @@
-import { useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigation, useLocalSearchParams } from "expo-router";
 import { Box, FlatList, Text } from "@gluestack-ui/themed";
 
 import Screen from "../../components/Screen";
 import ResponseCard from "../../components/ResponseCard";
-
-const RESPONSES = [
-  {
-    id: 1,
-    user: {
-      id: 1,
-      name: "John Doe 1",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 2,
-    user: {
-      id: 2,
-      name: "Jane Doe 2",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 3,
-    user: {
-      id: 3,
-      name: "John Doe 3",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-];
+import { DataContext } from "../../components/dataContext";
 
 export default function previousPrompt() {
   const { id } = useLocalSearchParams();
   const navigation = useNavigation();
+  const { getResponsesByPromptId, getPrompt } = useContext(DataContext);
+  const [prompt, setPrompt] = useState(null);
+  const [responses, setResponses] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    navigation.setOptions({
-      title: `Prompt ${id}`,
+    setLoading(true);
+    getPrompt(id, (error, promptData) => {
+      if (error) {
+        alert(error);
+      } else {
+        console.log(promptData);
+        setPrompt(promptData);
+        navigation.setOptions({
+          title: `Prompt ${promptData.promptid}`,
+        });
+        getResponsesByPromptId(id, (error, data) => {
+          setLoading(false);
+          if (error) {
+            alert(error);
+          } else {
+            setResponses(data);
+          }
+        });
+      }
     });
   }, []);
 
@@ -49,7 +41,7 @@ export default function previousPrompt() {
     return (
       <Box>
         <Text size="lg" textAlign="center" mb="$5">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          {prompt?.text}
         </Text>
         <Text fontWeight="bold" mb="$3">
           Responses
@@ -62,14 +54,14 @@ export default function previousPrompt() {
     <Screen>
       <FlatList
         ListHeaderComponent={renderTop}
-        data={RESPONSES}
+        data={responses}
+        ListEmptyComponent={
+          <Text textAlign="center">
+            {loading ? "Loading..." : "No responses found."}
+          </Text>
+        }
         renderItem={({ item, index }) => (
-          <ResponseCard
-            key={index}
-            index={index}
-            username={item.user.name}
-            response={item.response}
-          />
+          <ResponseCard key={index} index={index} response={item.text} />
         )}
       />
     </Screen>

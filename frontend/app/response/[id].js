@@ -26,81 +26,6 @@ import { getResponseById } from "../../components/apiCalls";
 import Screen from "../../components/Screen";
 import { useEffect, useRef, useState } from "react";
 
-const COMMENTS = [
-  {
-    id: 1,
-    user: {
-      id: 1,
-      name: "John Doe 1",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 2,
-    user: {
-      id: 2,
-      name: "Jane Doe 2",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 3,
-    user: {
-      id: 3,
-      name: "John Doe 3",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 4,
-    user: {
-      id: 4,
-      name: "Jane Doe 4",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 5,
-    user: {
-      id: 5,
-      name: "John Doe 5",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 6,
-    user: {
-      id: 6,
-      name: "Jane Doe 6",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 7,
-    user: {
-      id: 7,
-      name: "John Doe 7",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-  {
-    id: 8,
-    user: {
-      id: 8,
-      name: "Jane Doe 8",
-      avatar: "https://picsum.photos/200/300",
-    },
-    response: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  },
-];
-
 export default function response() {
   const { id } = useLocalSearchParams();
   const navigation = useNavigation();
@@ -115,7 +40,7 @@ export default function response() {
 
   useEffect(() => {
     navigation.setOptions({
-      title: `Prompt ID ${id}`,
+      title: `Response ID ${id}`,
     });
   }, []);
 

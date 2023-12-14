@@ -1,6 +1,7 @@
 import { useState, createContext } from "react";
 import {
   getRandomPrompt,
+  getResponses,
   postResponse,
   postAddFriend,
   postAcceptFriend,
@@ -8,6 +9,7 @@ import {
   deleteFriend,
   getUserById,
   getFriendsResponses,
+  getPromptById,
 } from "./apiCalls";
 
 export const DataContext = createContext(null);
@@ -83,6 +85,36 @@ export const DataProvider = ({ children }) => {
     });
   };
 
+  const getResponsesByPromptId = (promptId, callbackFn = null) => {
+    getResponses(promptId).then((data) => {
+      const response = data;
+      if (data.length === 0) {
+        if (callbackFn) {
+          return callbackFn("No responses found.", null);
+        }
+      } else {
+        if (callbackFn) {
+          return callbackFn(null, response);
+        }
+      }
+    });
+  };
+
+  const getPrompt = (promptId, callbackFn = null) => {
+    getPromptById(promptId).then((data) => {
+      const prompt = data;
+      if (data.length === 0) {
+        if (callbackFn) {
+          return callbackFn("No prompt found", null);
+        }
+      } else {
+        if (callbackFn) {
+          return callbackFn(null, prompt[0]);
+        }
+      }
+    });
+  };
+
   const getMyFriendsResponses = (userId, callbackFn = null) => {
     getFriendsResponses(userId, todayPrompt.promptid).then((data) => {
       if (data.error) {
@@ -149,6 +181,8 @@ export const DataProvider = ({ children }) => {
         getMyFriendsResponses,
         todayResponses,
         setTodayResponses,
+        getResponsesByPromptId,
+        getPrompt,
       }}
     >
       {children}
