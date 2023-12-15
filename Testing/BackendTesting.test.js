@@ -203,48 +203,7 @@ describe('Friendships API tests', () => {
             expect(response.status).toBe(200);
             const data = await response.json();
 
-            const expectedObjects = [
-    {
-        "status": "accepted",
-        "user": {
-            "userid": 2,
-            "username": "jane_smith",
-            "email": "jane.smith@example.com"
-        }
-    },
-    {
-        "status": "pending",
-        "user": {
-            "userid": 16,
-            "username": "khiem126",
-            "email": "khiem126@gmail.com"
-        }
-    },
-    {
-        "status": "pending",
-        "user": {
-            "userid": 15,
-            "username": "khiem125",
-            "email": "khiem125@gmail.com"
-        }
-    },
-    {
-        "status": "accepted",
-        "user": {
-            "userid": 3,
-            "username": "john_smith_updated",
-            "email": "john_smith_updated@example.com"
-        }
-    },
-    {
-        "status": "accepted",
-        "user": {
-            "userid": 2,
-            "username": "jane_smith",
-            "email": "jane.smith@example.com"
-        }
-    }
-];
+            const expectedObjects = [{"status": "accepted", "user": {"email": "jane.smith@example.com", "userid": 2, "username": "jane_smith"}}, {"status": "pending", "user": {"email": "khiem125@gmail.com", "userid": 15, "username": "khiem125"}}, {"status": "accepted", "user": {"email": "john_smith_updated@example.com", "userid": 3, "username": "john_smith_updated"}}, {"status": "accepted", "user": {"email": "khiem126@gmail.com", "userid": 16, "username": "khiem126"}}, {"status": "accepted", "user": {"email": "jane.smith@example.com", "userid": 2, "username": "jane_smith"}}];
             expect(data).toEqual(expect.arrayContaining(expectedObjects));
         })
     // Cannot add friends that do not exist

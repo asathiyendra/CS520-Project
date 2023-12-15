@@ -19,8 +19,8 @@ git clone https://github.com/asathiyendra/CS520-Project
 ```
 
 2. (Backend) Install dependencies:
-> [!WARNING]
-> Make sure you're in the project's root directory
+   > [!WARNING]
+   > Make sure you're in the project's root directory
 
 ```
 cd backend/
@@ -28,8 +28,8 @@ python -m pip install -r requirements.txt
 ```
 
 3. (Frontend) Install dependencies:
-> [!WARNING]
-> Make sure you're in the project's root directory
+   > [!WARNING]
+   > Make sure you're in the project's root directory
 
 ```
 cd frontend/
@@ -60,7 +60,20 @@ npx expo start
 
 **Backend**: Django
 
-**Database**: AWS MongoDB
+**Database**: AWS RDS
+
+## Jest Testing
+
+We use Jest as our testing framework for the backend of our application. Jest provides a simple and intuitive way to write and run tests, making it an invaluable tool for ensuring the reliability of our code.
+
+To run the tests, follow these steps:
+
+1. For Running the Jest test suite, navigate to the Testing directory and run the following command:
+
+```bash
+cd Testing
+Jest
+```
 
 ## Information
 
